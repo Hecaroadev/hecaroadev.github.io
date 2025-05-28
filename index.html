@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incidents Center Plugin - Professional Delivery & Design Document</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #7c3aed;
+            --accent-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        h3 {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 30px 0 15px;
+        }
+
+        h4 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .executive-summary {
+            background-color: var(--bg-tertiary);
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-color);
+            margin-bottom: 30px;
+        }
+
+        .key-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-tertiary) 100%);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .metric-card h5 {
+            color: var(--primary-color);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .metric-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .metric-card .description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .week-section {
+            background-color: var(--bg-tertiary);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .week-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .week-number {
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-right: 15px;
+        }
+
+        pre {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            box-shadow: var(--shadow-md);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+        }
+
+        .diagram-container {
+            background-color: var(--bg-tertiary);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+        
+        .diagram-container img { max-width: 100%; height: auto; border: 1px solid var(--border-color); }
+        .mermaid-code-block { display: none; } /* Hide Mermaid code by default if using images */
+
+        .diagram-container h5 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            box-shadow: var(--shadow-sm);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: var(--bg-tertiary);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .tech-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .risk-section {
+            background-color: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .risk-item {
+            display: flex;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .risk-level {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 10px;
+            text-transform: uppercase;
+        }
+
+        .risk-high {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+
+        .risk-medium {
+            background-color: #fed7aa;
+            color: #ea580c;
+        }
+
+        .risk-low {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+
+        .mermaid {
+            margin: 20px 0;
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-open { background: #dbeafe; color: #1e40af; }
+        .status-progress { background: #fef3c7; color: #92400e; }
+        .status-resolved { background: #d1fae5; color: #065f46; }
+        .status-closed { background: #e5e7eb; color: #374151; }
+
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 30px 20px; }
+            .header h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            .key-metrics { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Incidents Center Plugin</h1>
+            <p>Professional Delivery & Design Document</p>
+            <p style="font-size: 1rem; opacity: 0.8;">Version 2.1 | Last Updated: May 2025 (Merged)</p>
+        </div>
+
+        <div class="executive-summary">
+            <h2 style="border: none; margin-top: 0;">Executive Summary</h2>
+            <p><strong>Project:</strong> Enterprise-grade Incident Management System as a reusable plugin for ABP.IO applications.</p>
+            <p><strong>Objective:</strong> Deliver a professional, scalable incident tracking solution that seamlessly integrates into existing Angular/ABP.IO ecosystems, providing comprehensive incident management, real-time collaboration, and detailed audit trails. This document outlines the plan for a two-developer team leveraging Claude AI for enhanced productivity.</p>
+            
+            <div class="key-metrics">
+                <div class="metric-card">
+                    <h5>Team Size</h5>
+                    <div class="value">2</div>
+                    <div class="description">Senior Developers</div>
+                </div>
+                <div class="metric-card">
+                    <h5>Timeline</h5>
+                    <div class="value">3-4</div>
+                    <div class="description">Weeks to MVP</div>
+                </div>
+                <div class="metric-card">
+                    <h5>Technology</h5>
+                    <div class="value">ABP.IO</div>
+                    <div class="description">+ Angular + SQL Server</div>
+                </div>
+                <div class="metric-card">
+                    <h5>AI Productivity</h5>
+                    <div class="value">+25%</div>
+                    <div class="description">Using Claude AI</div>
+                </div>
+            </div>
+
+            <h4>Core Deliverables</h4>
+            <ul>
+                <li>✅ Reusable Angular library with professional UI components</li>
+                <li>✅ Backend ABP module with comprehensive APIs</li>
+                <li>✅ Real-time updates via SignalR</li>
+                <li>✅ Complete audit trail functionality</li>
+                <li>✅ File attachment support with ABP Blob Storage</li>
+                <li>✅ Role-based permissions system</li>
+            </ul>
+        </div>
+
+        <h2>1. Project Overview & Business Value</h2>
+        
+        <h3>1.1 Business Objectives</h3>
+        <ul>
+            <li><strong>Centralized Incident Management:</strong> Consolidate all client support issues into a single, trackable system.</li>
+            <li><strong>Improved Response Time:</strong> Real-time notifications and assignment capabilities to reduce resolution time.</li>
+            <li><strong>Compliance & Auditing:</strong> Complete audit trails ensure regulatory compliance and accountability.</li>
+            <li><strong>Client Satisfaction:</strong> Transparent tracking and communication improve client trust and satisfaction.</li>
+            <li><strong>Scalability:</strong> Plugin architecture allows deployment across multiple products and clients.</li>
+        </ul>
+
+        <h3>1.2 Technical Excellence</h3>
+        <div class="tech-stack">
+            <span class="tech-badge">.NET 8</span>
+            <span class="tech-badge">ABP.IO Framework</span>
+            <span class="tech-badge">Angular 17+</span>
+            <span class="tech-badge">SQL Server</span>
+            <span class="tech-badge">SignalR</span>
+            <span class="tech-badge">Entity Framework Core</span>
+            <span class="tech-badge">Swagger/OpenAPI</span>
+            <span class="tech-badge">TypeScript</span>
+            <span class="tech-badge">Claude AI (Assisted Coding)</span>
+        </div>
+
+        <h2>2. Detailed Delivery Plan (Two Developers - MVP Focus)</h2>
+        <p>This plan assumes two senior developers: one Angular specialist (8 years exp.) and one Backend specialist (6 years exp.). Both will heavily utilize AI tools (primarily Claude), leading to an approximate 20-25% productivity boost on their respective coding tasks. The work can be largely parallelized.</p>
+        <p><strong>Total Estimated Duration:</strong> ~15-20 working days (3-4 weeks).</p>
+
+        <div class="week-section">
+            <div class="week-header">
+                <div class="week-number">1</div>
+                <div>
+                    <h3 style="margin: 0;">Week 1: Foundations & Core APIs (Parallel Start)</h3>
+                    <p style="margin: 5px 0 0 0;">Goal: Setup projects, define domain, implement core backend APIs, and create initial Angular stubs/services.</p>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Developer Role</th>
+                        <th>Tasks</th>
+                        <th>Key Deliverables</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Backend Developer</strong><br>(6 yrs exp. + Claude)</td>
+                        <td>
+                            • Setup ABP Module project structure.<br>
+                            • Define Domain Entities (Incident, Comment, Attachment) & Aggregate Root (Incident).<br>
+                            • Implement Repository interfaces and SQL Server persistence.<br>
+                            • Implement core Application Services & DTOs (CreateIncident, GetIncident, GetIncidents, AddComment).<br>
+                            • Setup basic ABP Auditing.<br>
+                            • Write unit tests for Application Services.
+                        </td>
+                        <td>
+                            • Functional ABP module.<br>
+                            • Core domain model persisted.<br>
+                            • Initial set of REST APIs operational.<br>
+                            • Unit test suite for backend.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Frontend Developer</strong><br>(8 yrs exp. + Claude)</td>
+                        <td>
+                            • Setup Angular Library project.<br>
+                            • Create core Angular services for API interaction.<br>
+                            • Develop basic UI shell/layout for incident components.<br>
+                            • Develop IncidentReportComponent (form structure).<br>
+                            • Develop IncidentListComponent (basic list structure).
+                        </td>
+                        <td>
+                            • Angular library structure.<br>
+                            • Services capable of (mocked) API calls.<br>
+                            • Initial UI components for incident reporting and listing.
+                        </td>
+                    </tr>
+                     <tr>
+                        <td><strong>Shared/Coordination</strong></td>
+                        <td>• Finalize API contract (DTOs).<br>• Setup shared Git repository.</td>
+                        <td>• Agreed API specification.<br>• Version control setup.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="week-section">
+            <div class="week-header">
+                <div class="week-number">2</div>
+                <div>
+                    <h3 style="margin: 0;">Week 2: Feature Implementation & Integration</h3>
+                    <p style="margin: 5px 0 0 0;">Goal: Implement core incident management features, integrate frontend with backend, and handle attachments.</p>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Developer Role</th>
+                        <th>Tasks</th>
+                        <th>Key Deliverables</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Backend Developer</strong></td>
+                        <td>
+                            • Implement ChangeIncidentStatusAsync, AssignIncidentAsync.<br>
+                            • Implement Attachment handling APIs & ABP Blob Storing integration.<br>
+                            • Refine filtering/pagination for GetIncidentsAsync.<br>
+                            • Implement basic SignalR Hub for real-time notifications.<br>
+                            • Expand unit/integration tests.
+                        </td>
+                        <td>
+                            • APIs for full incident lifecycle.<br>
+                            • File upload/download working.<br>
+                            • Real-time notifications for key events.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Frontend Developer</strong></td>
+                        <td>
+                            • Complete IncidentReportComponent (API integration, file upload UI).<br>
+                            • Complete IncidentListComponent (API integration, filtering UI).<br>
+                            • Develop IncidentDetailComponent (display details, status, comments, add comment, change status).<br>
+                            • Integrate SignalR for real-time UI updates.<br>
+                            • Basic styling and UX improvements. <br>
+                            • Unit tests for Angular components.
+                        </td>
+                        <td>
+                            • Fully interactive UI for reporting, listing, and detailing incidents.<br>
+                            • Real-time updates reflected in UI.<br>
+                            • Functional attachment management.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shared/Coordination</strong></td>
+                        <td>• Continuous integration.<br>• Resolving API/UI discrepancies.</td>
+                        <td>• Smooth frontend-backend data flow.<br>• Integrated features.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="week-section">
+            <div class="week-header">
+                <div class="week-number">3</div>
+                <div>
+                    <h3 style="margin: 0;">Week 3: Auditing, Polish, Testing & Documentation</h3>
+                    <p style="margin: 5px 0 0 0;">Goal: Implement audit trail visibility, refine UX, conduct thorough testing, and prepare initial documentation.</p>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Developer Role</th>
+                        <th>Tasks</th>
+                        <th>Key Deliverables</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Backend Developer</strong></td>
+                        <td>
+                            • Ensure audit log data is queryable per incident.<br>
+                            • Expose API endpoint for incident audit trail.<br>
+                            • Refine permissions using ABP permission system.<br>
+                            • Final API checks, Swagger documentation review.<br>
+                            • Prepare for NuGet packaging.
+                        </td>
+                        <td>
+                            • API for retrieving audit logs.<br>
+                            • Comprehensive Swagger docs.<br>
+                            • Backend module ready for packaging.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Frontend Developer</strong></td>
+                        <td>
+                            • Display audit trail in IncidentDetailComponent.<br>
+                            • Finalize UI/UX polish (error handling, loading states).<br>
+                            • Write End-to-End (E2E) tests for key user flows.<br>
+                            • Prepare for NPM packaging.<br>
+                            • Write client-side documentation (README).
+                        </td>
+                        <td>
+                            • Visual audit trail.<br>
+                            • Polished and robust UI.<br>
+                            • E2E tests covering main scenarios.<br>
+                            • Angular library ready for packaging.
+                        </td>
+                    </tr>
+                     <tr>
+                        <td><strong>Shared/Coordination</strong></td>
+                        <td>• Joint E2E testing and bug fixing.<br>• Code reviews.<br>• Consolidate documentation.</td>
+                        <td>• Stable MVP.<br>• Initial user & developer documentation.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="week-section">
+            <div class="week-header">
+                <div style="background-color: var(--accent-color);" class="week-number">4</div>
+                <div>
+                    <h3 style="margin: 0;">(Optional) Week 4: Buffer & Advanced Refinements</h3>
+                    <p style="margin: 5px 0 0 0;">Goal: Address complexities, enhance features, or conduct further optimization if time allows.</p>
+                </div>
+            </div>
+             <ul>
+                <li>More comprehensive E2E testing scenarios.</li>
+                <li>Advanced UI/UX features (e.g., customizable dashboards, themes).</li>
+                <li>More complex notification scenarios or integrations (e.g., email notifications).</li>
+                <li>Performance optimizations based on stress testing.</li>
+                <li>Enhanced reporting features.</li>
+            </ul>
+        </div>
+
+
+        <h2>3. System Architecture</h2>
+
+        <h3>3.1 Use Case Diagram</h3>
+        <div class="diagram-container">
+            <h5>Incident Management System - Use Cases</h5>
+            <!-- 
+                IMAGE PLACEHOLDER: 
+                Generate the Use Case diagram using the Mermaid code below (from the hidden div)
+                and update the src path of this img tag.
+                Example: <img src="./images/use-case-diagram-generated.svg" alt="Use Case Diagram">
+            -->
+            <img src="./use-case-diagram-generated.svg" alt="Use Case Diagram - Please Generate and Update Path">
+            <p><em>(If the image above is not displaying, please generate it from the Mermaid code in the hidden block below using mermaid.live and update the <code>src</code> path.)</em></p>
+        </div>
+        <div class="mermaid-code-block">
+            <pre><code class="mermaid">
+graph TB
+    subgraph Actors
+        CU[Client User]
+        SA[Support Agent]
+        SM[System Manager]
+    end
+    
+    subgraph "Incident Center System"
+        UC1[Report Incident]
+        UC2[View My Incidents]
+        UC3[View All Incidents]
+        UC4[Add Comment]
+        UC5[Change Status]
+        UC6[Assign Agent]
+        UC7[Upload Attachment]
+        UC8[View Audit Trail]
+        UC9[Generate Reports]
+        UC10[Configure Workflows]
+    end
+    
+    CU --> UC1
+    CU --> UC2
+    CU --> UC4
+    CU --> UC7
+    
+    SA --> UC3
+    SA --> UC4
+    SA --> UC5
+    SA --> UC6
+    SA --> UC7
+    SA --> UC8
+    
+    SM --> UC8
+    SM --> UC9
+    SM --> UC10
+    
+    style CU fill:#e0f2fe,stroke:#0284c7
+    style SA fill:#fef3c7,stroke:#f59e0b
+    style SM fill:#f3e8ff,stroke:#9333ea
+            </code></pre>
+        </div>
+        <h4>Actors:</h4>
+        <ul>
+            <li><strong>Client User (CU):</strong> End-users of your products who report and track their incidents.</li>
+            <li><strong>Support Agent (SA):</strong> Internal team members responsible for managing, investigating, and resolving incidents.</li>
+            <li><strong>System Manager (SM):</strong> Administrators responsible for system configuration, reporting, and workflow management.</li>
+        </ul>
+        <h4>Key Use Cases:</h4>
+        <ul>
+            <li><strong>Report Incident (UC1):</strong> Users submit new incidents with details and attachments.</li>
+            <li><strong>View My Incidents (UC2):</strong> Client Users view incidents they reported.</li>
+            <li><strong>View All Incidents (UC3):</strong> Support Agents view all incidents with filtering and sorting.</li>
+            <li><strong>Add Comment (UC4):</strong> Users add comments (public or internal) to incidents.</li>
+            <li><strong>Change Status (UC5):</strong> Support Agents update the status of incidents (Open, In Progress, Resolved, etc.).</li>
+            <li><strong>Assign Agent (UC6):</strong> Support Agents assign incidents to themselves or other agents.</li>
+            <li><strong>Upload Attachment (UC7):</strong> Users attach relevant files to incidents or comments.</li>
+            <li><strong>View Audit Trail (UC8):</strong> Authorized users view the history of changes for an incident.</li>
+            <li><strong>Generate Reports (UC9):</strong> System Managers generate reports on incident metrics.</li>
+            <li><strong>Configure Workflows (UC10):</strong> System Managers configure incident statuses, priorities, and automation rules.</li>
+        </ul>
+
+
+        <h3>3.2 Domain Model - Class Diagram</h3>
+        <div class="diagram-container">
+            <h5>Core Domain Entities and Relationships</h5>
+            <!-- 
+                IMAGE PLACEHOLDER: 
+                Generate the Class diagram using the Mermaid code below (from the hidden div)
+                and update the src path of this img tag.
+                Example: <img src="./images/class-diagram-generated.svg" alt="Class Diagram">
+            -->
+            <img src="./class-diagram-generated.svg" alt="Class Diagram - Please Generate and Update Path">
+            <p><em>(If the image above is not displaying, please generate it from the Mermaid code in the hidden block below using mermaid.live and update the <code>src</code> path.)</em></p>
+        </div>
+        <div class="mermaid-code-block">
+            <pre><code class="mermaid">
+classDiagram
+    class Incident {
+        +Guid Id
+        +string Title
+        +string Description
+        +IncidentStatus Status
+        +IncidentPriority Priority
+        +Guid? ReportedByUserId
+        +string ReportedByUserName
+        +Guid? AssignedToUserId
+        +string AssignedToUserName
+        +DateTime CreationTime
+        +DateTime? LastModificationTime
+        +DateTime? ResolvedTime
+        +List~Comment~ Comments
+        +List~Attachment~ Attachments
+        +List~StatusHistory~ StatusHistories
+        +Report()
+        +ChangeStatus(newStatus, userId)
+        +AssignTo(userId)
+        +AddComment(text, userId)
+        +AddAttachment(file, userId)
+        +SetPriority(priority)
+    }
+    
+    class Comment {
+        +Guid Id
+        +Guid IncidentId
+        +string Text
+        +CommentType Type
+        +Guid AuthorUserId
+        +string AuthorUserName
+        +DateTime CreationTime
+        +bool IsInternal
+        +List~Attachment~ Attachments
+    }
+    
+    class Attachment {
+        +Guid Id
+        +Guid ParentEntityId
+        +ParentEntityType EntityType
+        +string FileName
+        +string FilePathOrUrl
+        +string MimeType
+        +long FileSize
+        +Guid UploadedByUserId
+        +DateTime CreationTime
+        +string BlobName
+    }
+    
+    class StatusHistory {
+        +Guid Id
+        +Guid IncidentId
+        +IncidentStatus OldStatus
+        +IncidentStatus NewStatus
+        +Guid ChangedByUserId
+        +string ChangedByUserName
+        +DateTime ChangeTime
+        +string Reason
+    }
+    
+    class AuditLog {
+        +Guid Id
+        +string EntityType
+        +Guid EntityId
+        +string Action
+        +string OldValues
+        +string NewValues
+        +Guid UserId
+        +DateTime ActionTime
+        +string IpAddress
+    }
+    
+    class IncidentStatus {
+        <<enumeration>>
+        Open
+        InProgress
+        PendingClientReply
+        OnHold
+        Resolved
+        Closed
+        Cancelled
+    }
+    
+    class IncidentPriority {
+        <<enumeration>>
+        Low
+        Medium
+        High
+        Critical
+    }
+    
+    class CommentType {
+        <<enumeration>>
+        UserComment
+        SystemGenerated
+        StatusChange
+        Assignment
+    }
+    
+    class ParentEntityType {
+        <<enumeration>>
+        Incident
+        Comment
+    }
+    
+    Incident "1" *-- "0..*" Comment : "contains"
+    Incident "1" *-- "0..*" Attachment : "has"
+    Incident "1" *-- "0..*" StatusHistory : "tracks"
+    Comment "1" *-- "0..*" Attachment : "includes"
+    Incident ..> IncidentStatus : "uses"
+    Incident ..> IncidentPriority : "has"
+    Comment ..> CommentType : "typed as"
+    Attachment ..> ParentEntityType : "references"
+    AuditLog ..> Incident : "audits"
+    AuditLog ..> Comment : "audits"
+    
+    style Incident fill:#dbeafe,stroke:#2563eb,stroke-width:3px
+    style AuditLog fill:#fee2e2,stroke:#dc2626,stroke-width:2px
+            </code></pre>
+        </div>
+
+
+        <h3>3.3 Sequence Diagram - Report New Incident Flow</h3>
+        <div class="diagram-container">
+            <h5>Complete Incident Creation Process with Validations</h5>
+            <div class="mermaid">
+sequenceDiagram
+    participant U as User
+    participant UI as Angular UI
+    participant VS as Validation Service
+    participant API as Incident API
+    participant AS as App Service
+    participant DS as Domain Service
+    participant R as Repository
+    participant BS as Blob Storage
+    participant AL as Audit Logger
+    participant SH as SignalR Hub
+    participant N as Notifications
+
+    U->>UI: Fill incident form & attach files
+    UI->>VS: Validate form data
+    VS-->>UI: Validation result
+    
+    alt Validation Failed
+        UI->>U: Show validation errors
+    else Validation Passed
+        UI->>API: POST /api/incident (with files)
+        API->>AS: CreateIncidentAsync(dto)
+        
+        AS->>AS: Check user permissions
+        AS->>DS: Validate business rules
+        
+        alt Has Attachments
+            AS->>BS: StoreFilesAsync(files)
+            BS-->>AS: File URLs/IDs
+        end
+        
+        AS->>R: Create Incident entity
+        R->>R: Begin transaction
+        R->>R: Insert incident
+        R->>R: Insert attachments
+        R->>AL: Log creation audit
+        R->>R: Commit transaction
+        R-->>AS: Incident created
+        
+        AS->>SH: NotifyIncidentCreated
+        SH->>N: Broadcast to agents
+        
+        AS-->>API: Return IncidentDto
+        API-->>UI: 201 Created + IncidentDto
+        UI->>U: Show success message
+        UI->>U: Navigate to incident detail
+    end
+            </div>
+        </div>
+
+        <h3>3.4 Workflow Flowchart: Basic Incident Lifecycle</h3>
+        <div class="diagram-container">
+            <h5>Overview of an Incident's Journey</h5>
+             <div class="mermaid">
+                graph TD
+                    A["User reports incident via Angular UI"] --> B{"Data Validation"};
+                    B -- "Valid" --> C["Backend: IncidentAppService.CreateIncidentAsync"];
+                    B -- "Invalid" --> D["UI: Show Error Messages"];
+                    C --> E["Domain: Create Incident Entity"];
+                    E --> F["Infra: Save Incident to DB (SQL Server)"];
+                    F --> G["Infra: Save Attachments (if any) to Blob Storage"];
+                    G --> H["Audit: Log Incident Creation (ABP AuditLog)"];
+                    H --> I["Notify: Send SignalR Notification"];
+                    I --> J["UI: Display Success / Incident ID"];
+        
+                    K["Support Agent views Incident List"] --> L{"Selects an Incident"};
+                    L --> M["UI: Display Incident Details & Comments"];
+                    M --> N{"Agent Action?"};
+                    N -- "Add Comment" --> O["UI: Enters comment & submits"];
+                    O --> P["Backend: IncidentAppService.AddCommentAsync"];
+                    P --> Q["Domain: Add Comment to Incident Entity"];
+                    Q --> R["Infra: Save Comment to DB"];
+                    R --> S["Audit: Log Comment Addition"];
+                    S --> T["Notify: SignalR update"];
+                    T --> M;
+        
+                    N -- "Change Status" --> U["UI: Selects new status & submits"];
+                    U --> V["Backend: IncidentAppService.ChangeStatusAsync"];
+                    V --> W["Domain: Update Incident Status"];
+                    W --> X["Infra: Save Incident Update to DB"];
+                    X --> Y["Audit: Log Status Change"];
+                    Y --> Z["Notify: SignalR update"];
+                    Z --> M;
+
+                    N -- "Resolve Incident" --> RC1["Agent marks as Resolved"];
+                    RC1 --> RC2["Backend: ChangeStatusAsync(Resolved)"];
+                    RC2 --> RC3["Domain: Set ResolvedTime, update status"];
+                    RC3 --> RC4["Audit & Notify"];
+                    RC4 --> M;
+
+                    M -- "Client Confirms Resolution or Reopens" --> CRR;
+                    CRR -- "Confirms" --> CLS["Agent Closes Incident"];
+                    CRR -- "Reopens" -->ROPEN["Status back to Open/In Progress"];
+                    CLS --> M;
+                    ROPEN --> M;
+            </div>
+        </div>
+
+
+        <h2>4. Technical Implementation Details</h2>
+
+        <h3>4.1 Backend Architecture Patterns</h3>
+        
+        <h4>Domain-Driven Design Implementation</h4>
+        <pre><code>// Incident Aggregate Root (Example Snippet)
+public class Incident : FullAuditedAggregateRoot&lt;Guid&gt;
+{
+    public string Title { get; private set; }
+    public string Description { get; private set; }
+    public IncidentStatus Status { get; private set; }
+    public IncidentPriority Priority { get; private set; }
+    public Guid? AssignedToUserId { get; private set; }
+    public DateTime? ResolvedTime { get; private set; }
+    
+    private readonly List&lt;Comment&gt; _comments = new();
+    public IReadOnlyCollection&lt;Comment&gt; Comments =&gt; _comments.AsReadOnly();
+    
+    private readonly List&lt;StatusHistory&gt; _statusHistory = new();
+    public IReadOnlyCollection&lt;StatusHistory&gt; StatusHistory =&gt; _statusHistory.AsReadOnly();
+
+    protected Incident() { /* For EF Core */ } 
+
+    public Incident(Guid id, string title, string description, Guid reporterId, IncidentPriority priority = IncidentPriority.Medium) 
+        : base(id)
+    {
+        SetTitle(title);
+        SetDescription(description);
+        Status = IncidentStatus.Open;
+        Priority = priority;
+        CreatorId = reporterId; // Assuming FullAuditedAggregateRoot has CreatorId
+        
+        AddDomainEvent(new IncidentCreatedDomainEvent(this));
+        _statusHistory.Add(new StatusHistory(GuidGenerator.Create(), Id, IncidentStatus.Open, IncidentStatus.Open, reporterId, "Incident Created"));
+    }
+
+    public void ChangeStatus(IncidentStatus newStatus, Guid userId, string reason = null)
+    {
+        if (Status == newStatus) return;
+        
+        var oldStatus = Status;
+        Status = newStatus;
+        
+        _statusHistory.Add(new StatusHistory(
+            GuidGenerator.Create(), // ABP GuidGenerator
+            Id,
+            oldStatus,
+            newStatus,
+            userId,
+            reason
+        ));
+        
+        if (newStatus == IncidentStatus.Resolved && ResolvedTime == null)
+        {
+            ResolvedTime = Clock.Now; // ABP Clock
+        }
+        else if (newStatus != IncidentStatus.Resolved && ResolvedTime != null)
+        {
+            ResolvedTime = null; // Re-opened
+        }
+        
+        AddDomainEvent(new IncidentStatusChangedDomainEvent(this, oldStatus, newStatus));
+    }
+
+    public Comment AddComment(string text, Guid authorId, CommentType type = CommentType.UserComment, bool isInternal = false)
+    {
+        // Input validation for comment text can be added here or in Comment constructor
+        var comment = new Comment(GuidGenerator.Create(), Id, text, authorId, type, isInternal);
+        _comments.Add(comment);
+        
+        AddDomainEvent(new CommentAddedDomainEvent(this, comment));
+        return comment;
+    }
+
+    // Other methods like AssignTo, SetPriority, AddAttachment...
+
+    private void SetTitle(string title)
+    {
+        // Using Volo.Abp.Guids.AbpCheck for validation
+        Title = Check.NotNullOrWhiteSpace(title, nameof(title), maxLength: IncidentConsts.MaxTitleLength);
+    }
+
+    private void SetDescription(string description)
+    {
+        Description = Check.NotNullOrWhiteSpace(description, nameof(description), maxLength: IncidentConsts.MaxDescriptionLength);
+    }
+}</code></pre>
+
+        <h4>Application Service with CQRS Pattern (Conceptual)</h4>
+        <pre><code>// IncidentAppService (Example Snippet)
+public class IncidentAppService : ApplicationService, IIncidentAppService // IIncidentAppService defines contracts
+{
+    private readonly IRepository&lt;Incident, Guid&gt; _incidentRepository;
+    private readonly IBlobContainer&lt;IncidentAttachmentContainer&gt; _blobContainer; // Specific container for attachments
+    private readonly IBackgroundJobManager _backgroundJobManager;
+    private readonly IDistributedEventBus _distributedEventBus;
+    // Inject other services like IUserManager, ICurrentUser etc.
+
+    public IncidentAppService(
+        IRepository&lt;Incident, Guid&gt; incidentRepository,
+        IBlobContainer&lt;IncidentAttachmentContainer&gt; blobContainer,
+        IBackgroundJobManager backgroundJobManager,
+        IDistributedEventBus distributedEventBus)
+    {
+        _incidentRepository = incidentRepository;
+        _blobContainer = blobContainer;
+        _backgroundJobManager = backgroundJobManager;
+        _distributedEventBus = distributedEventBus;
+    }
+
+    [Authorize(IncidentPermissions.Create)] // ABP Authorization
+    public async Task&lt;IncidentDto&gt; CreateAsync(CreateIncidentDto input)
+    {
+        var incident = new Incident(
+            GuidGenerator.Create(),
+            input.Title,
+            input.Description,
+            CurrentUser.GetId(), // ABP ICurrentUser
+            input.Priority
+        );
+
+        if (input.Attachments?.Any() == true)
+        {
+            foreach (var fileInput in input.Attachments)
+            {
+                // Assuming fileInput is a DTO with FileName, ContentBytes, MimeType
+                var blobName = await SaveFileToBlobAsync(fileInput.FileName, fileInput.ContentBytes);
+                incident.AddAttachment( // Assuming AddAttachment method exists in Incident entity
+                    GuidGenerator.Create(), 
+                    fileInput.FileName, 
+                    blobName, // Path or unique ID in blob
+                    fileInput.MimeType,
+                    fileInput.ContentBytes.Length,
+                    CurrentUser.GetId()
+                );
+            }
+        }
+
+        await _incidentRepository.InsertAsync(incident, autoSave: true);
+
+        // Example of publishing a distributed event
+        await _distributedEventBus.PublishAsync(new IncidentCreatedEto(incident.Id, incident.Title));
+        
+        // Example of enqueuing a background job
+        await _backgroundJobManager.EnqueueAsync&lt;IncidentNotificationJob, IncidentNotificationArgs&gt;(
+            new IncidentNotificationArgs { IncidentId = incident.Id, Message = "New incident created." }
+        );
+
+        return ObjectMapper.Map&lt;Incident, IncidentDto&gt;(incident); // ABP ObjectMapper
+    }
+
+    private async Task&lt;string&gt; SaveFileToBlobAsync(string fileName, byte[] content)
+    {
+        // Generate a unique blob name, possibly with tenant ID and date folders
+        var blobName = $"{CurrentTenant.Id ?? Guid.Empty}/{Clock.Now:yyyyMMdd}/{GuidGenerator.Create()}_{fileName}";
+        await _blobContainer.SaveAsync(blobName, content, overrideExisting: false);
+        return blobName; // This is the path/ID to store in Attachment entity
+    }
+
+    // Other methods for Update, Delete, Get, GetList, AddComment, ChangeStatus etc.
+    // Each method would have its own DTOs, authorization checks, and business logic.
+}</code></pre>
+
+        <h3>4.2 Frontend Architecture</h3>
+
+        <h4>Angular Service with RxJS</h4>
+        <pre><code>// incident.service.ts (Example Snippet)
+import { Injectable, Injector } from '@angular/core';
+import { Observable, Subject, throwError } from 'rxjs';
+import { catchError, filter, switchMap, tap } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { ConfigStateService, RestService } from '@abp/ng.core'; // ABP specific services
+import { PagedResultDto } from '@abp/ng.core';
+import * as signalR from '@microsoft/signalr';
+// Import DTOs: IncidentDto, CreateIncidentDto, IncidentUpdateDto, GetIncidentsInput etc.
+
+@Injectable({
+  providedIn: 'root'
+})
+export class IncidentService extends RestService { // Extends ABP RestService for convenience
+  private hubConnection: signalR.HubConnection;
+  private incidentUpdatesSource = new Subject&lt;IncidentUpdateDto&gt;(); // Replace with actual DTO
+  incidentUpdates$ = this.incidentUpdatesSource.asObservable();
+
+  // Assuming API route is defined in environment or ConfigStateService
+  protected apiName = 'incidentManagement'; // Matches backend module's remote service name
+
+  constructor(
+    injector: Injector,
+    private http: HttpClient, // Standard HttpClient for FormData
+    private configState: ConfigStateService
+  ) {
+    super(injector);
+    this.initSignalR();
+  }
+
+  private get apiUrl(): string {
+    return this.configState.getApiUrl(this.apiName);
+  }
+
+  private initSignalR(): void {
+    const signalRUrl = `${this.apiUrl}/signalr-hubs/incidents`; // Adjust path
+    this.hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl(signalRUrl, {
+        accessTokenFactory: () => this.getAuthToken() // Method to get current JWT
+      })
+      .withAutomaticReconnect([0, 2000, 10000, 30000]) // Retry intervals
+      .build();
+
+    this.hubConnection.on('IncidentUpdated', (data: IncidentUpdateDto) => {
+      this.incidentUpdatesSource.next(data);
+    });
+
+    this.hubConnection.start()
+      .then(() => console.log('Incident SignalR Hub Connected.'))
+      .catch(err => console.error('SignalR Connection Error: ', err));
+  }
+
+  // Example: Create incident with attachments
+  create(input: CreateIncidentDto, files: File[]): Observable&lt;IncidentDto&gt; {
+    const formData = new FormData();
+    formData.append('title', input.title);
+    formData.append('description', input.description);
+    formData.append('priority', input.priority.toString());
+    // Append other scalar properties from CreateIncidentDto
+
+    if (files && files.length > 0) {
+      files.forEach(file => formData.append('attachments', file, file.name));
+    }
+
+    // Use HttpClient directly for FormData
+    return this.http.post&lt;IncidentDto&gt;(`${this.apiUrl}/api/app/incident`, formData)
+      .pipe(
+        tap(() => this.notify.success('Incident reported successfully!', 'Success')),
+        catchError(err => this.handleError(err))
+      );
+  }
+  
+  get(id: string): Observable&lt;IncidentDto&gt; {
+    return this.request&lt;void, IncidentDto&gt;({ method: 'GET', url: `/api/app/incident/${id}` });
+  }
+
+  getList(input: GetIncidentsInput): Observable&lt;PagedResultDto&lt;IncidentDto&gt;&gt; {
+    return this.request&lt;void, PagedResultDto&lt;IncidentDto&gt;&gt;({ 
+        method: 'GET', 
+        url: '/api/app/incident',
+        params: input 
+    });
+  }
+
+  // Add methods for update, addComment, changeStatus etc.
+
+  private handleError(error: any) {
+    // Basic error handling, can be enhanced with ABP ProblemDetails
+    this.notify.error('An error occurred. Please try again.', 'Error');
+    return throwError(() => new Error(error.message || 'Server Error'));
+  }
+  
+  private getAuthToken(): string | Promise&lt;string&gt; {
+    // Implement logic to get the current JWT token, possibly from OidcSecurityService
+    return localStorage.getItem('access_token') || ''; // Placeholder
+  }
+}</code></pre>
+
+        <h4>Angular Component with Reactive Forms & Change Detection</h4>
+        <pre><code>// incident-detail.component.ts (Example Snippet)
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, Subject, merge } from 'rxjs';
+import { filter, switchMap, takeUntil, tap, shareReplay } from 'rxjs/operators';
+import { IncidentService } from '../services/incident.service';
+// Import DTOs: IncidentDto, CommentDto, AddCommentDto, AuditLogDto etc.
+// Import ABP services like ListService for managing data tables if needed
+
+@Component({
+  selector: 'app-incident-detail', // Use your library's prefix
+  templateUrl: './incident-detail.component.html',
+  // styleUrls: ['./incident-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush // Optimize performance
+})
+export class IncidentDetailComponent implements OnInit, OnDestroy {
+  incidentId: string;
+  incident$: Observable&lt;IncidentDto&gt;;
+  auditLogs$: Observable&lt;AuditLogDto[]&gt;; // Assuming AuditLogDto exists
+  
+  commentForm: FormGroup;
+  isSubmittingComment = false;
+
+  private destroy$ = new Subject&lt;void&gt;();
+
+  constructor(
+    private route: ActivatedRoute,
+    private incidentService: IncidentService,
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef // For manual change detection if needed
+  ) {
+    this.commentForm = this.fb.group({
+      text: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(2000)]],
+      isInternal: [false],
+      // attachments: [null] // Handle file input separately
+    });
+  }
+
+  ngOnInit(): void {
+    this.incidentId = this.route.snapshot.paramMap.get('id');
+    if (!this.incidentId) { 
+      // Handle error: no ID found
+      return; 
+    }
+
+    const initialLoad$ = this.incidentService.get(this.incidentId);
+    const updates$ = this.incidentService.incidentUpdates$.pipe(
+      filter(update => update.incidentId === this.incidentId), // Ensure update is for current incident
+      switchMap(() => this.incidentService.get(this.incidentId)) // Re-fetch incident on update
+    );
+
+    this.incident$ = merge(initialLoad$, updates$).pipe(
+      tap(incident => {
+        // Potentially update related data or trigger other actions
+        console.log('Incident data updated:', incident);
+        this.cdr.markForCheck(); // Trigger change detection if view depends on complex state
+      }),
+      shareReplay({ bufferSize: 1, refCount: true }), // Cache last emission and share among subscribers
+      takeUntil(this.destroy$)
+    );
+
+    // Example: Load audit logs
+    // this.auditLogs$ = this.incidentService.getAuditLogs(this.incidentId).pipe(takeUntil(this.destroy$));
+  }
+
+  submitComment(): void {
+    if (this.commentForm.invalid) {
+      // Mark fields as touched to show validation errors
+      Object.values(this.commentForm.controls).forEach(control => control.markAsTouched());
+      return;
+    }
+    this.isSubmittingComment = true;
+    
+    const commentInput: AddCommentDto = { // Assuming AddCommentDto exists
+      text: this.commentForm.value.text,
+      isInternal: this.commentForm.value.isInternal
+      // attachments: handle file uploads if any
+    };
+
+    this.incidentService.addComment(this.incidentId, commentInput)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.commentForm.reset({ isInternal: false }); // Reset form, keep internal toggle if desired
+          // No need to manually re-fetch incident if SignalR update handles it
+          this.isSubmittingComment = false;
+          this.cdr.markForCheck();
+        },
+        error: () => {
+          this.isSubmittingComment = false;
+          this.cdr.markForCheck();
+          // Show error notification to user
+        }
+      });
+  }
+
+  // Other methods for changing status, assigning agent, handling attachments etc.
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}</code></pre>
+
+        <h2>5. Quality Assurance Strategy</h2>
+
+        <h3>5.1 Testing Pyramid</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Test Type</th>
+                    <th>Coverage Target</th>
+                    <th>Tools</th>
+                    <th>Responsibility</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Unit Tests</td>
+                    <td>90% (Core Logic)</td>
+                    <td>xUnit, NSubstitute (Backend); Jasmine, Karma (Frontend)</td>
+                    <td>Both developers</td>
+                </tr>
+                <tr>
+                    <td>Integration Tests</td>
+                    <td>80% (API Endpoints, DB Interactions)</td>
+                    <td>ABP TestBase, WebApplicationFactory, TestContainers</td>
+                    <td>Backend developer</td>
+                </tr>
+                <tr>
+                    <td>E2E Tests</td>
+                    <td>Critical User Flows (Report, View, Comment, Status Change)</td>
+                    <td>Cypress or Playwright</td>
+                    <td>Frontend developer</td>
+                </tr>
+                <tr>
+                    <td>Performance Tests</td>
+                    <td>Key API Endpoints (GetList, Create)</td>
+                    <td>NBomber, k6, JMeter</td>
+                    <td>Backend developer</td>
+                </tr>
+                <tr>
+                    <td>Security Tests (Automated)</td>
+                    <td>OWASP Top 10 checks</td>
+                    <td>SonarQube (Static Analysis), OWASP ZAP (DAST basics)</td>
+                    <td>Both developers (config), CI Pipeline</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>5.2 Performance Requirements</h3>
+        <ul>
+            <li><strong>API Response Time:</strong> 95th percentile < 250ms for standard operations.</li>
+            <li><strong>Page Load Time (Initial):</strong> Largest Contentful Paint (LCP) < 2.5 seconds.</li>
+            <li><strong>Concurrent Users (MVP Target):</strong> Support 100+ concurrent active users.</li>
+            <li><strong>Database Queries:</strong> Optimized queries, avoiding N+1 problems; average query time < 50ms.</li>
+            <li><strong>Real-time Updates Latency:</strong> SignalR message delivery < 500ms within the network.</li>
+        </ul>
+
+        <h2>6. Risk Management</h2>
+        
+        <div class="risk-section">
+            <h3>Identified Risks & Mitigation Strategies</h3>
+            
+            <div class="risk-item">
+                <span class="risk-level risk-high">HIGH</span>
+                <div>
+                    <strong>Scope Creep:</strong> Adding features beyond MVP during development.
+                    <br><em>Mitigation:</em> Strict adherence to MVP scope for initial 3-4 week delivery. Regular stakeholder check-ins to manage expectations. Maintain a prioritized backlog for post-MVP features.
+                </div>
+            </div>
+
+            <div class="risk-item">
+                <span class="risk-level risk-medium">MEDIUM</span>
+                <div>
+                    <strong>Integration with Host Angular Apps:</strong> Challenges in making the plugin truly generic and easy to integrate.
+                    <br><em>Mitigation:</em> Design for loose coupling. Provide clear documentation and examples. Test plugin integration in at least two diverse host app shells during development.
+                </div>
+            </div>
+            
+            <div class="risk-item">
+                <span class="risk-level risk-medium">MEDIUM</span>
+                <div>
+                    <strong>Real-time Synchronization Complexity:</strong> Ensuring consistent state across clients with SignalR, especially with potential connection drops.
+                    <br><em>Mitigation:</em> Robust SignalR error handling and reconnection strategies. Consider state reconciliation mechanisms if full consistency is critical and updates are frequent.
+                </div>
+            </div>
+
+            <div class="risk-item">
+                <span class="risk-level risk-low">LOW</span>
+                <div>
+                    <strong>ABP.IO/Angular Version Mismatches:</strong> Future updates to ABP or Angular could break plugin compatibility.
+                    <br><em>Mitigation:</em> Define clear peer dependencies. Regular testing against new ABP/Angular minor versions. Plan for maintenance releases.
+                </div>
+            </div>
+
+            <div class="risk-item">
+                <span class="risk-level risk-low">LOW</span>
+                <div>
+                    <strong>AI Tool Limitations:</strong> Over-reliance on Claude leading to suboptimal code or overlooked edge cases.
+                    <br><em>Mitigation:</em> All AI-generated code subject to rigorous review by developers. Pair programming or peer review for critical sections. Emphasize understanding, not just generation.
+                </div>
+            </div>
+        </div>
+
+        <h2>7. Security Considerations</h2>
+        
+        <h3>7.1 Authentication & Authorization</h3>
+        <ul>
+            <li>Leverage ABP.IO's built-in <strong>JWT Token-based authentication</strong> and authorization framework.</li>
+            <li>Define granular <strong>Role-based permissions</strong>:
+                <ul>
+                    <li><code>Incidents.View.Own</code> - Client Users can view their own reported incidents.</li>
+                    <li><code>Incidents.View.All</code> - Support Agents can view all incidents.</li>
+                    <li><code>Incidents.Create</code> - Authorized users can create new incidents.</li>
+                    <li><code>Incidents.Edit</code> - Authorized users can edit incident details (e.g., title, description).</li>
+                    <li><code>Incidents.ManageStatus</code> - Support Agents can change incident statuses.</li>
+                    <li><code>Incidents.Assign</code> - Support Agents can assign incidents.</li>
+                    <li><code>Incidents.AddComment.Public</code> - Users can add public comments.</li>
+                    <li><code>Incidents.AddComment.Internal</code> - Support Agents can add internal comments.</li>
+                    <li><code>Incidents.ManageAttachments</code> - Authorized users can add/delete attachments.</li>
+                    <li><code>Incidents.Admin</code> (or <code>Incidents.Configure</code>) - System Managers for configuration.</li>
+                </ul>
+            </li>
+            <li>Ensure proper permission checks are applied in all Application Service methods.</li>
+        </ul>
+
+        <h3>7.2 Data Protection</h3>
+        <ul>
+            <li><strong>Input Validation:</strong> Rigorous validation on all DTOs (backend) and forms (frontend) to prevent injection attacks (XSS, SQLi). Use ABP's validation attributes and Angular's built-in validators.</li>
+            <li><strong>Output Encoding:</strong> Ensure proper encoding of data displayed in the UI (Angular handles much of this by default, but be cautious with `[innerHTML]`).</li>
+            <li><strong>File Upload Security:</strong>
+                <ul>
+                    <li>Validate file types, extensions, and size limits.</li>
+                    <li>Consider virus scanning for uploaded files if infrastructure allows.</li>
+                    <li>Store user-uploaded files in a secure, non-executable location (ABP Blob Storing helps).</li>
+                    <li>Serve files with appropriate `Content-Disposition` headers.</li>
+                </ul>
+            </li>
+            <li><strong>Audit Logging:</strong> Comprehensive audit logs for all create, update, delete operations, status changes, and assignments, as provided by ABP's auditing features.</li>
+            <li><strong>HTTPS:</strong> Enforce HTTPS for all communications.</li>
+            <li><strong>Secrets Management:</strong> Use ABP's recommended practices for managing connection strings and API keys (e.g., user secrets, Azure Key Vault).</li>
+        </ul>
+
+        <h2>8. Deployment & DevOps</h2>
+        
+        <h3>8.1 CI/CD Pipeline Outline</h3>
+        <p>A typical CI/CD pipeline (e.g., using Azure DevOps, GitHub Actions) would include:</p>
+        <ol>
+            <li><strong>Trigger:</strong> On push/merge to `main` or `develop` branches.</li>
+            <li><strong>Build Stage (Backend - .NET):</strong>
+                <ul>
+                    <li>Restore NuGet packages.</li>
+                    <li>Build the solution.</li>
+                    <li>Run unit and integration tests.</li>
+                    <li>Code analysis (e.g., SonarQube).</li>
+                    <li>Pack ABP Module (NuGet package).</li>
+                    <li>Publish NuGet package to a feed (e.g., Azure Artifacts, GitHub Packages).</li>
+                </ul>
+            </li>
+            <li><strong>Build Stage (Frontend - Angular):</strong>
+                <ul>
+                    <li>Install npm packages (`npm ci`).</li>
+                    <li>Lint the code.</li>
+                    <li>Run unit tests (Karma/Jasmine).</li>
+                    <li>Build the Angular library for production.</li>
+                    <li>Pack the Angular library (NPM package).</li>
+                    <li>Publish NPM package to a registry (e.g., npmjs.com, Azure Artifacts, GitHub Packages).</li>
+                </ul>
+            </li>
+            <li><strong>(Optional) Deploy Stage (Demo/Test Environment):</strong>
+                <ul>
+                    <li>Deploy the backend module to a test ABP host application.</li>
+                    <li>Deploy the Angular library to a test Angular host application.</li>
+                    <li>Run E2E tests against the deployed test environment.</li>
+                </ul>
+            </li>
+        </ol>
+        <pre><code># Example GitHub Actions Workflow Snippet (Conceptual)
+name: Build and Publish Incident Plugin
+
+on:
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  build_backend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x' # Match your project's .NET version
+    - name: Restore dependencies
+      run: dotnet restore ./MyCompany.Incidents.sln
+    - name: Build
+      run: dotnet build --configuration Release --no-restore ./MyCompany.Incidents.sln
+    - name: Test
+      run: dotnet test --configuration Release --no-build --verbosity normal ./MyCompany.Incidents.sln
+    # ... steps to pack and publish NuGet package ...
+
+  build_frontend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x' # Match your Angular version's Node requirement
+        cache: 'npm'
+        cache-dependency-path: '**/package-lock.json' # Adjust if you use yarn or pnpm
+    - name: Install dependencies
+      run: npm ci # Or: cd angular-app && npm ci
+    - name: Lint
+      run: npm run lint # Or: cd angular-app && npm run lint
+    - name: Test
+      run: npm run test -- --watch=false --browsers=ChromeHeadlessCI # Or: cd angular-app && ...
+    - name: Build library
+      run: npm run build:lib # Assuming 'build:lib' script builds your Angular library
+    # ... steps to pack and publish NPM package ...
+</code></pre>
+
+        <h3>8.2 Monitoring & Observability Strategy</h3>
+        <ul>
+            <li><strong>Logging:</strong> Implement structured logging (e.g., using Serilog with sinks for Console, File, and a log management system like Seq, ELK Stack, or Azure Monitor). Ensure correlation IDs are used for tracing requests across services.</li>
+            <li><strong>Metrics:</strong> Track key application metrics (request rates, error rates, duration) using tools like Prometheus/Grafana or ABP's integration with monitoring systems. For frontend, track core web vitals and component interaction times.</li>
+            <li><strong>Health Checks:</strong> Implement ABP health checks for the backend module, verifying database connectivity and other critical dependencies.</li>
+            <li><strong>Distributed Tracing:</strong> If the plugin interacts with other microservices, leverage ABP's distributed tracing capabilities (e.g., OpenTelemetry integration).</li>
+            <li><strong>Alerting:</strong> Set up alerts for critical errors, performance degradation, and resource exhaustion in production environments.</li>
+        </ul>
+
+        <h2>9. Documentation Deliverables</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Document Type</th>
+                    <th>Purpose</th>
+                    <th>Audience</th>
+                    <th>Format</th>
+                    <th>Owner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>README.md (Backend Module)</strong></td>
+                    <td>Overview, setup, configuration, contribution guidelines for the ABP module.</td>
+                    <td>Developers</td>
+                    <td>Markdown (in repo)</td>
+                    <td>Backend Dev</td>
+                </tr>
+                <tr>
+                    <td><strong>README.md (Angular Library)</strong></td>
+                    <td>Overview, installation (`npm install`), usage examples, component API for the Angular library.</td>
+                    <td>Developers</td>
+                    <td>Markdown (in repo)</td>
+                    <td>Frontend Dev</td>
+                </tr>
+                <tr>
+                    <td><strong>API Reference (Swagger/OpenAPI)</strong></td>
+                    <td>Detailed description of all backend API endpoints, DTOs, and authentication.</td>
+                    <td>Developers (Backend & Frontend)</td>
+                    <td>Auto-generated via ABP Swagger UI</td>
+                    <td>Backend Dev (via code comments)</td>
+                </tr>
+                 <tr>
+                    <td><strong>Integration Guide</strong></td>
+                    <td>Step-by-step instructions on how to integrate the plugin (both backend module and Angular library) into an existing ABP host application.</td>
+                    <td>Developers integrating the plugin</td>
+                    <td>Markdown / Wiki page</td>
+                    <td>Both Devs</td>
+                </tr>
+                <tr>
+                    <td><strong>Conceptual Architecture Overview</strong></td>
+                    <td>High-level description of the plugin's architecture, key components, and data flow (this document serves as a starting point).</td>
+                    <td>Architects, New Team Members</td>
+                    <td>This HTML Document</td>
+                    <td>Both Devs</td>
+                </tr>
+                <tr>
+                    <td><strong>(Post-MVP) User Guide Snippets</strong></td>
+                    <td>Examples of how end-users would interact with key features, to be incorporated into host application's user manual.</td>
+                    <td>End Users, Product Owners</td>
+                    <td>Markdown / Word</td>
+                    <td>Frontend Dev / Product Owner</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>10. Success Metrics</h2>
+        
+        <div class="key-metrics">
+            <div class="metric-card">
+                <h5>Development Velocity</h5>
+                <div class="value">Target TBD</div> <!-- Set after first sprint -->
+                <div class="description">Story points per sprint (2 Devs)</div>
+            </div>
+            <div class="metric-card">
+                <h5>Code Quality (SonarQube)</h5>
+                <div class="value">A Rating</div>
+                <div class="description">Maintainability & Reliability</div>
+            </div>
+            <div class="metric-card">
+                <h5>Test Coverage</h5>
+                <div class="value">&gt; 80%</div>
+                <div class="description">Unit & Integration (Backend)</div>
+            </div>
+            <div class="metric-card">
+                <h5>Performance (MVP)</h5>
+                <div class="value">&lt; 300ms</div>
+                <div class="description">P95 API Response Time</div>
+            </div>
+             <div class="metric-card">
+                <h5>Bug Density</h5>
+                <div class="value">&lt; 5</div>
+                <div class="description">Critical/High bugs post-release</div>
+            </div>
+            <div class="metric-card">
+                <h5>Plugin Adoption</h5>
+                <div class="value">2+</div>
+                <div class="description">Internal products using plugin Q1 post-MVP</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Document Version:</strong> 2.1 | <strong>Last Updated:</strong> May 2025 (Merged)</p>
+            <p><strong>Prepared by:</strong> Technical Leads</p>
+            <p><strong>Status:</strong> <span class="status-badge status-open">Final Draft - Ready for Kickoff</span></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'base', // Using 'base' theme as it works well with custom vars
+            themeVariables: {
+                primaryColor: '#dbeafe', // Light blue for primary shapes
+                primaryTextColor: '#1e3a8a', // Dark blue text
+                primaryBorderColor: '#93c5fd', // Medium blue border
+                lineColor: '#6b7280', // Grey for lines
+                secondaryColor: '#f3e8ff', // Light purple for secondary
+                tertiaryColor: '#d1fae5', // Light green for tertiary
+                
+                // Backgrounds for specific node types (can be customized in diagram)
+                mainBkg: '#dbeafe',         // default node background
+                secondBkg: '#fef3c7',       // actor background (Support Agent example)
+                tertiaryBkg: '#f3e8ff',     // actor background (System Manager example)
+
+                // Text colors for nodes
+                nodeTextColor: '#1f2937',
+
+                // Other theme variables if needed
+                // Note: Some variables might be specific to diagram types or renderer versions
+                // For instance, 'actorBkg' or 'taskBkg' might be used by specific themes/versions.
+                // The 'base' theme is generally more receptive to primaryColor/secondaryColor.
+                
+                background: '#ffffff', // Overall diagram background (if not transparent)
+                // darkMode: false, // Explicitly set if needed
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+            }
+        });
+    </script>
+</body>
+</html>
